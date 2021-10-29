@@ -1,0 +1,1109 @@
+Basic Text
+Processing
+Regular Expressions
+Regular expressions
+A formal language for specifying text strings
+How can we search for any of these?
+◦ woodchuck
+◦ woodchucks
+◦ Woodchuck
+◦ Woodchucks
+Regular Expressions: Disjunctions
+Letters inside square brackets []
+Ranges [A-Z]
+Pattern Matches
+[wW]oodchuck Woodchuck, woodchuck
+[1234567890] Any digit
+Pattern Matches
+[A-Z] An upper case letter Drenched Blossoms
+[a-z] A lower case letter my beans were impatient
+[0-9] A single digit Chapter 1: Down the Rabbit Hole
+Regular Expressions: Negation in Disjunction
+Negations [^Ss]
+◦ Carat means negation only when first in []
+Pattern Matches
+[^A-Z] Not an upper case
+letter
+Oyfn pripetchik
+[^Ss] Neither ‘S’ nor ‘s’ I have no exquisite reason”
+[^e^] Neither e nor ^ Look here
+a^b The pattern a carat b Look up a^b now
+Regular Expressions: More Disjunction
+Woodchuck is another name for groundhog!
+The pipe | for disjunction
+Pattern Matches
+groundhog|woodchuck woodchuck
+yours|mine yours
+a|b|c = [abc]
+[gG]roundhog|[Ww]oodchuck Woodchuck
+Regular Expressions: ? *+.
+Stephen C Kleene
+Pattern Matches
+colou?r Optional
+previous char
+color colour
+oo*h! 0 or more of
+previous char
+oh! ooh! oooh! ooooh!
+o+h! 1 or more of
+previous char
+oh! ooh! oooh! ooooh!
+baa+ baa baaa baaaa baaaaa
+beg.n begin begun begun beg3n
+Kleene *, Kleene + 
+Regular Expressions: Anchors ^ $
+Pattern Matches
+^[A-Z] Palo Alto
+^[^A-Za-z] 1 “Hello”
+\.$ The end.
+.$ The end? The end!
+Example
+Find me all instances of the word “the” in a text.
+the
+Misses capitalized examples
+[tT]he
+Incorrectly returns other or theology
+[^a-zA-Z][tT]he[^a-zA-Z]
+Errors
+The process we just went through was based on
+fixing two kinds of errors:
+1. Matching strings that we should not have matched
+(there, then, other)
+False positives (Type I errors)
+2. Not matching things that we should have matched (The)
+False negatives (Type II errors)
+Errors cont.
+In NLP we are always dealing with these kinds of
+errors.
+Reducing the error rate for an application often
+involves two antagonistic efforts:
+◦ Increasing accuracy or precision (minimizing false
+positives)
+◦ Increasing coverage or recall (minimizing false negatives).
+Summary
+Regular expressions play a surprisingly large role
+◦ Sophisticated sequences of regular expressions are often
+the first model for any text processing text
+For hard tasks, we use machine learning classifiers
+◦ But regular expressions are still used for pre-processing,
+or as features in the classifiers
+◦ Can be very useful in capturing generalizations
+11
+Basic Text
+Processing
+Regular Expressions
+Basic Text
+Processing
+More Regular Expressions:
+Substitutions and ELIZA
+Substitutions
+Substitution in Python and UNIX commands:
+s/regexp1/pattern/
+e.g.:
+s/colour/color/ 
+Capture Groups
+• Say we want to put angles around all numbers:
+the 35 boxes à the <35> boxes
+• Use parens () to "capture" a pattern into a
+numbered register (1, 2, 3…)
+• Use \1 to refer to the contents of the register
+s/([0-9]+)/<\1>/ 
+Capture groups: multiple registers
+/the (.*)er they (.*), the \1er we \2/
+Matches
+the faster they ran, the faster we ran
+But not
+the faster they ran, the faster we ate 
+But suppose we don't want to capture?
+Parentheses have a double function: grouping terms, and
+capturing
+Non-capturing groups: add a ?: after paren:
+/(?:some|a few) (people|cats) like some \1/
+matches
+◦ some cats like some cats
+but not
+◦ some cats like some some
+Lookahead assertions
+(?= pattern) is true if pattern matches, but is
+zero-width; doesn't advance character pointer
+(?! pattern) true if a pattern does not match
+How to match, at the beginning of a line, any single
+word that doesn’t start with “Volcano”:
+/ˆ(?!Volcano)[A-Za-z]+/ 
+Simple Application: ELIZA
+Early NLP system that imitated a Rogerian
+psychotherapist
+◦ Joseph Weizenbaum, 1966.
+Uses pattern matching to match, e.g.,:
+◦ “I need X”
+and translates them into, e.g.
+◦ “What would it mean to you if you got X? 
+Simple Application: ELIZA
+Men are all alike.
+IN WHAT WAY
+They're always bugging us about something or other.
+CAN YOU THINK OF A SPECIFIC EXAMPLE
+Well, my boyfriend made me come here.
+YOUR BOYFRIEND MADE YOU COME HERE
+He says I'm depressed much of the time.
+I AM SORRY TO HEAR YOU ARE DEPRESSED 
+How ELIZA works
+s/.* I’M (depressed|sad) .*/I AM SORRY TO HEAR YOU ARE \1/
+s/.* I AM (depressed|sad) .*/WHY DO YOU THINK YOU ARE \1/
+s/.* all .*/IN WHAT WAY?/
+s/.* always .*/CAN YOU THINK OF A SPECIFIC EXAMPLE?/ 
+Basic Text
+Processing
+More Regular Expressions:
+Substitutions and ELIZA
+Basic Text
+Processing
+Words and Corpora
+How many words in a sentence?
+"I do uh main- mainly business data processing"
+◦ Fragments, filled pauses
+"Seuss’s cat in the hat is different from other cats!"
+◦ Lemma: same stem, part of speech, rough word sense
+◦ cat and cats = same lemma
+◦ Wordform: the full inflected surface form
+◦ cat and cats = different wordforms
+How many words in a sentence?
+they lay back on the San Francisco grass and looked at the stars
+and their
+Type: an element of the vocabulary.
+Token: an instance of that type in running text.
+How many?
+◦ 15 tokens (or 14)
+◦ 13 types (or 12) (or 11?)
+How many words in a corpus?
+N = number of tokens
+V = vocabulary = set of types, |V| is size of vocabulary
+Heaps Law = Herdan's Law = where often .67 < β < .75
+i.e., vocabulary size grows with > square root of the number of word tokens
+Tokens = N Types = |V|
+Switchboard phone conversations 2.4 million 20 thousand
+Shakespeare 884,000 31 thousand
+COCA 440 million 2 million
+Google N-grams 1 trillion 13+ million
+2.2 • WORDS 11
+duce other complications with regard to defining words. Let’s look at one utterance
+utterance from Switchboard; an utterance is the spoken correlate of a sentence:
+I do uh main- mainly business data processing
+disfluency This utterance has two kinds of disfluencies. The broken-off word main- is
+fragment called a fragment. Words like uh and um are called fillers or filled pauses. Should
+filled pause we consider these to be words? Again, it depends on the application. If we are
+building a speech transcription system, we might want to eventually strip out the
+disfluencies.
+But we also sometimes keep disfluencies around. Disfluencies like uh or um
+are actually helpful in speech recognition in predicting the upcoming word, because
+they may signal that the speaker is restarting the clause or idea, and so for speech
+recognition they are treated as regular words. Because people use different disfluencies they can also be a cue to speaker identification. In fact Clark and Fox Tree
+(2002) showed that uh and um have different meanings. What do you think they are?
+Are capitalized tokens like They and uncapitalized tokens like they the same
+word? These are lumped together in some tasks (speech recognition), while for partof-speech or named-entity tagging, capitalization is a useful feature and is retained.
+How about inflected forms like cats versus cat? These two words have the same
+lemma lemma cat but are different wordforms. A lemma is a set of lexical forms having
+the same stem, the same major part-of-speech, and the same word sense. The wordwordform form is the full inflected or derived form of the word. For morphologically complex
+languages like Arabic, we often need to deal with lemmatization. For many tasks in
+English, however, wordforms are sufficient.
+How many words are there in English? To answer this question we need to
+word type distinguish two ways of talking about words. Types are the number of distinct words
+in a corpus; if the set of words in the vocabulary is V, the number of types is the
+word token vocabulary size |V|. Tokens are the total number N of running words. If we ignore
+punctuation, the following Brown sentence has 16 tokens and 14 types:
+They picnicked by the pool, then lay back on the grass and looked at the stars.
+When we speak about the number of words in the language, we are generally
+referring to word types.
+Corpus Tokens = N Types = |V|
+Shakespeare 884 thousand 31 thousand
+Brown corpus 1 million 38 thousand
+Switchboard telephone conversations 2.4 million 20 thousand
+COCA 440 million 2 million
+Google N-grams 1 trillion 13 million
+Figure 2.11 Rough numbers of types and tokens for some English language corpora. The
+largest, the Google N-grams corpus, contains 13 million types, but this count only includes
+types appearing 40 or more times, so the true number would be much larger.
+Fig. 2.11 shows the rough numbers of types and tokens computed from some
+popular English corpora. The larger the corpora we look at, the more word types
+we find, and in fact this relationship between the number of types |V| and number
+Herdan’s Law of tokens N is called Herdan’s Law (Herdan, 1960) or Heaps’ Law (Heaps, 1978)
+Heaps’ Law after its discoverers (in linguistics and information retrieval respectively). It is shown
+in Eq. 2.1, where k and b are positive constants, and 0 < b < 1.
+|V| = kNb (2.1)
+Corpora
+Words don't appear out of nowhere!
+A text is produced by
+• a specific writer(s),
+• at a specific time,
+• in a specific variety,
+• of a specific language,
+• for a specific function.
+Corpora vary along dimension like
+◦ Language: 7097 languages in the world
+◦ Variety, like African American Language varieties.
+◦ AAE Twitter posts might include forms like "iont" (I don't)
+◦ Code switching, e.g., Spanish/English, Hindi/English:
+S/E: Por primera vez veo a @username actually being hateful! It was beautiful:)
+[For the first time I get to see @username actually being hateful! it was beautiful:) ]
+H/E: dost tha or ra- hega ... dont wory ... but dherya rakhe
+[“he was and will remain a friend ... don’t worry ... but have faith”]
+◦ Genre: newswire, fiction, scientific articles, Wikipedia
+◦ Author Demographics: writer's age, gender, ethnicity, SES 
+Corpus datasheets
+Motivation:
+• Why was the corpus collected?
+• By whom?
+• Who funded it?
+Situation: In what situation was the text written?
+Collection process: If it is a subsample how was it sampled? Was
+there consent? Pre-processing?
++Annotation process, language variety, demographics, etc.
+Gebru et al (2020), Bender and Friedman (2018)
+Basic Text
+Processing
+Words and Corpora
+Basic Text
+Processing
+Word tokenization
+Text Normalization
+Every NLP task requires text normalization:
+1. Tokenizing (segmenting) words
+2. Normalizing word formats
+3. Segmenting sentences
+Space-based tokenization
+A very simple way to tokenize
+◦ For languages that use space characters between words
+◦ Arabic, Cyrillic, Greek, Latin, etc., based writing systems
+◦ Segment off a token between instances of spaces
+Unix tools for space-based tokenization
+◦ The "tr" command
+◦ Inspired by Ken Church's UNIX for Poets
+◦ Given a text file, output the word tokens and their frequencies
+Simple Tokenization in UNIX
+(Inspired by Ken Church’s UNIX for Poets.)
+Given a text file, output the word tokens and their frequencies
+tr -sc ’A-Za-z’ ’\n’ < shakes.txt
+| sort
+| uniq –c
+1945 A
+72 AARON
+19 ABBESS
+5 ABBOT
+... ...
+25 Aaron
+6 Abate
+1 Abates
+5 Abbess
+6 Abbey
+3 Abbot
+.... …
+Change all non-alpha to newlines
+Sort in alphabetical order
+Merge and count each type
+The first step: tokenizing
+tr -sc ’A-Za-z’ ’\n’ < shakes.txt | head
+THE
+SONNETS
+by
+William
+Shakespeare
+From
+fairest
+creatures
+We
+...
+The second step: sorting
+tr -sc ’A-Za-z’ ’\n’ < shakes.txt | sort | head
+A
+A
+A
+A
+A
+A
+A
+A
+A
+...
+More counting
+Merging upper and lower case
+tr ‘A-Z’ ‘a-z’ < shakes.txt | tr –sc ‘A-Za-z’ ‘\n’ | sort | uniq –c
+Sorting the counts
+tr ‘A-Z’ ‘a-z’ < shakes.txt | tr –sc ‘A-Za-z’ ‘\n’ | sort | uniq –c | sort –n –r
+23243 the
+22225 i
+18618 and
+16339 to
+15687 of
+12780 a
+12163 you
+10839 my
+10005 in
+8954 d
+What happened here?
+Issues in Tokenization
+Can't just blindly remove punctuation:
+◦ m.p.h., Ph.D., AT&T, cap’n
+◦ prices ($45.55)
+◦ dates (01/02/06)
+◦ URLs (http://www.stanford.edu)
+◦ hashtags (#nlproc)
+◦ email addresses (someone@cs.colorado.edu)
+Clitic: a word that doesn't stand on its own
+◦ "are" in we're, French "je" in j'ai,
+"le" in l'honneur
+When should multiword expressions (MWE) be words?
+◦ New York, rock ’n’ roll 
+Tokenization in NLTK
+16 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+Input: "The San Francisco-based restaurant," they said,
+"doesn’t charge $10".
+Output: " The San Francisco-based restaurant ,
+" they said ,
+" does n’t charge $ 10 " .
+In practice, since tokenization needs to be run before any other language processing, it needs to be very fast. The standard method for tokenization is therefore
+to use deterministic algorithms based on regular expressions compiled into very efficient finite state automata. For example, Fig. 2.12 shows an example of a basic
+regular expression that can be used to tokenize with the nltk.regexp tokenize
+function of the Python-based Natural Language Toolkit (NLTK) (Bird et al. 2009;
+http://www.nltk.org).
+>>> text = ’That U.S.A. poster-print costs $12.40...’
+>>> pattern = r’’’(?x) # set flag to allow verbose regexps
+... ([A-Z]\.)+ # abbreviations, e.g. U.S.A.
+... | \w+(-\w+)* # words with optional internal hyphens
+... | \$?\d+(\.\d+)?%? # currency and percentages, e.g. $12.40, 82%
+... | \.\.\. # ellipsis
+... | [][.,;"’?():-_‘] # these are separate tokens; includes ], [
+... ’’’
+>>> nltk.regexp_tokenize(text, pattern)
+[’That’, ’U.S.A.’, ’poster-print’, ’costs’, ’$12.40’, ’...’]
+Figure 2.12 A Python trace of regular expression tokenization in the NLTK Python-based
+natural language processing toolkit (Bird et al., 2009), commented for readability; the (?x)
+verbose flag tells Python to strip comments and whitespace. Figure from Chapter 3 of Bird
+et al. (2009).
+Carefully designed deterministic algorithms can deal with the ambiguities that
+arise, such as the fact that the apostrophe needs to be tokenized differently when used
+as a genitive marker (as in the book’s cover), a quotative as in ‘The other class’, she
+said, or in clitics like they’re.
+Word tokenization is more complex in languages like written Chinese, Japanese,
+and Thai, which do not use spaces to mark potential word-boundaries. In Chinese,
+hanzi for example, words are composed of characters (called hanzi in Chinese). Each
+character generally represents a single unit of meaning (called a morpheme) and is
+pronounceable as a single syllable. Words are about 2.4 characters long on average.
+But deciding what counts as a word in Chinese is complex. For example, consider
+the following sentence:
+(2.4) ⁄€e;≥[
+“Yao Ming reaches the finals”
+As Chen et al. (2017) point out, this could be treated as 3 words (‘Chinese Treebank’
+segmentation):
+(2.5) ⁄
+YaoMing
+€e
+reaches
+;≥[
+finals
+or as 5 words (‘Peking University’ segmentation):
+(2.6) ⁄
+Yao
+
+Ming
+€e
+reaches
+;
+overall
+≥[
+finals
+Finally, it is possible in Chinese simply to ignore words altogether and use characters
+as the basic elements, treating the sentence as a series of 7 characters:
+Bird, Loper and Klein (2009), Natural Language Processing with Python. O’Reilly
+Tokenization in languages without spaces
+Many languages (like Chinese, Japanese, Thai) don't
+use spaces to separate words!
+How do we decide where the token boundaries
+should be?
+Word tokenization in Chinese
+Chinese words are composed of characters called
+"hanzi" (or sometimes just "zi")
+Each one represents a meaning unit called a morpheme.
+Each word has on average 2.4 of them.
+But deciding what counts as a word is complex and not
+agreed upon.
+How to do word tokenization in Chinese?
+姚明进入总决赛 “Yao Ming reaches the finals”
+3 words?
+姚明 进入 总决赛
+YaoMing reaches finals
+5 words?
+姚 明 进入 总 决赛
+Yao Ming reaches overall finals
+7 characters? (don't use words at all):
+姚 明 进 入 总 决 赛
+Yao Ming enter enter overall decision game
+How to do word tokenization in Chinese?
+姚明进入总决赛 “Yao Ming reaches the finals”
+3 words?
+姚明 进入 总决赛
+YaoMing reaches finals
+5 words?
+姚 明 进入 总 决赛
+Yao Ming reaches overall finals
+7 characters? (don't use words at all):
+姚 明 进 入 总 决 赛
+Yao Ming enter enter overall decision game
+How to do word tokenization in Chinese?
+姚明进入总决赛 “Yao Ming reaches the finals”
+3 words?
+姚明 进入 总决赛
+YaoMing reaches finals
+5 words?
+姚 明 进入 总 决赛
+Yao Ming reaches overall finals
+7 characters? (don't use words at all):
+姚 明 进 入 总 决 赛
+Yao Ming enter enter overall decision game
+How to do word tokenization in Chinese?
+姚明进入总决赛 “Yao Ming reaches the finals”
+3 words?
+姚明 进入 总决赛
+YaoMing reaches finals
+5 words?
+姚 明 进入 总 决赛
+Yao Ming reaches overall finals
+7 characters? (don't use words at all):
+姚 明 进 入 总 决 赛
+Yao Ming enter enter overall decision game
+Word tokenization / segmentation
+So in Chinese it's common to just treat each character
+(zi) as a token.
+• So the segmentation step is very simple
+In other languages (like Thai and Japanese), more
+complex word segmentation is required.
+• The standard algorithms are neural sequence models
+trained by supervised machine learning.
+Basic Text
+Processing
+Word tokenization
+Basic Text
+Processing
+Byte Pair Encoding
+Another option for text tokenization
+Instead of
+• white-space segmentation
+• single-character segmentation
+Use the data to tell us how to tokenize.
+Subword tokenization (because tokens can be parts
+of words as well as whole words)
+Subword tokenization
+Three common algorithms:
+◦ Byte-Pair Encoding (BPE) (Sennrich et al., 2016)
+◦ Unigram language modeling tokenization (Kudo, 2018)
+◦ WordPiece (Schuster and Nakajima, 2012)
+All have 2 parts:
+◦ A token learner that takes a raw training corpus and induces
+a vocabulary (a set of tokens).
+◦ A token segmenter that takes a raw test sentence and
+tokenizes it according to that vocabulary
+Byte Pair Encoding (BPE) token learner
+Let vocabulary be the set of all individual characters
+= {A, B, C, D,…, a, b, c, d….}
+Repeat:
+◦ Choose the two symbols that are most frequently
+adjacent in the training corpus (say 'A', 'B')
+◦ Add a new merged symbol 'AB' to the vocabulary
+◦ Replace every adjacent 'A' 'B' in the corpus with 'AB'.
+Until k merges have been done.
+BPE token learner algorithm 2.4 • TEXT NORMALIZATION 19
+function BYTE-PAIR ENCODING(strings C, number of merges k) returns vocab V
+V all unique characters in C # initial set of tokens is characters
+for i = 1 to k do # merge tokens til k times
+tL, tR Most frequent pair of adjacent tokens in C
+tNEW tL + tR # make new token by concatenating
+V V + tNEW # update the vocabulary
+Replace each occurrence of tL, tR in C with tNEW # and update the corpus
+return V
+Figure 2.13 The token learner part of the BPE algorithm for taking a corpus broken up
+into individual characters or bytes, and learning a vocabulary by iteratively merging tokens.
+Figure adapted from Bostrom and Durrett (2020).
+from the training data, greedily, in the order we learned them. (Thus the frequencies
+in the test data don’t play a role, just the frequencies in the training data). So first
+we segment each test sentence word into characters. Then we apply the first rule:
+replace every instance of e r in the test corpus with r, and then the second rule:
+replace every instance of er in the test corpus with er , and so on. By the end,
+if the test corpus contained the word newer , it would be tokenized as a full
+word. But a new (unknown) word like lower would be merged into the two
+tokens low er .
+Of course in real algorithms BPE is run with many thousands of merges on a very
+large input corpus. The result is that most words will be represented as full symbols,
+and only the very rare words (and unknown words) will have to be represented by
+their parts.
+2.4.4 Word Normalization, Lemmatization and Stemming
+normalization Word normalization is the task of putting words/tokens in a standard format, choosing a single normal form for words with multiple forms like USA and US or uh-huh
+and uhhuh. This standardization may be valuable, despite the spelling information
+that is lost in the normalization process. For information retrieval or information
+extraction about the US, we might want to see information from documents whether
+they mention the US or the USA.
+case folding Case folding is another kind of normalization. Mapping everything to lower
+case means that Woodchuck and woodchuck are represented identically, which is
+very helpful for generalization in many tasks, such as information retrieval or speech
+recognition. For sentiment analysis and other text classification tasks, information
+extraction, and machine translation, by contrast, case can be quite helpful and case
+folding is generally not done. This is because maintaining the difference between,
+for example, US the country and us the pronoun can outweigh the advantage in
+generalization that case folding would have provided for other words.
+For many natural language processing situations we also want two morphologically different forms of a word to behave similarly. For example in web search,
+someone may type the string woodchucks but a useful system might want to also
+return pages that mention woodchuck with no s. This is especially common in morphologically complex languages like Russian, where for example the word Moscow
+has different endings in the phrases Moscow, of Moscow, to Moscow, and so on.
+Lemmatization is the task of determining that two words have the same root,
+despite their surface differences. The words am, are, and is have the shared lemma
+Byte Pair Encoding (BPE) Addendum
+Most subword algorithms are run inside spaceseparated tokens.
+So we commonly first add a special end-of-word
+symbol '__' before space in training corpus
+Next, separate into letters.
+18 CHAPTER 2 • BPE token learner REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+The algorithm is usually run inside words (not merging across word boundaries),
+so the input corpus is first white-space-separated to give a set of strings, each corresponding to the characters of a word, plus a special end-of-word symbol , and its
+counts. Let’s see its operation on the following tiny input corpus of 18 word tokens
+with counts for each word (the word low appears 5 times, the word newer 6 times,
+and so on), which would have a starting vocabulary of 11 letters:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w
+2 lowest
+6 newer
+3 wider
+2 new
+The BPE algorithm first count all pairs of adjacent symbols: the most frequent
+is the pair e r because it occurs in newer (frequency of 6) and wider (frequency of
+3) for a total of 9 occurrences1. We then merge these symbols, treating er as one
+symbol, and count again:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Now the most frequent pair is er , which we merge; our system has learned
+that there should be a token for word-final er, represented as er :
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Next n e (total count of 8) get merged to ne:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er , ne
+2 lowest
+6 ne w er
+3 w i d er
+2 ne w
+If we continue, the next merges are:
+Merge Current Vocabulary
+(ne, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new
+(l, o) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo
+(lo, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low
+(new, er ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer
+(low, ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer , low
+Once we’ve learned our vocabulary, the token parser is used to tokenize a test
+sentence. The token parser just runs on the test data the merges we have learned
+1 Note that there can be ties; we could have instead chosen to merge r first, since that also has a
+frequency of 9.
+Original (very fascinating�) corpus:
+low low low low low lowest lowest newer newer newer
+newer newer newer wider wider wider new new
+Add end-of-word tokens, resulting in this vocabulary:
+representation
+BPE token learner
+18 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+The algorithm is usually run inside words (not merging across word boundaries),
+so the input corpus is first white-space-separated to give a set of strings, each corresponding to the characters of a word, plus a special end-of-word symbol , and its
+counts. Let’s see its operation on the following tiny input corpus of 18 word tokens
+with counts for each word (the word low appears 5 times, the word newer 6 times,
+and so on), which would have a starting vocabulary of 11 letters:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w
+2 lowest
+6 newer
+3 wider
+2 new
+The BPE algorithm first count all pairs of adjacent symbols: the most frequent
+is the pair e r because it occurs in newer (frequency of 6) and wider (frequency of
+3) for a total of 9 occurrences1. We then merge these symbols, treating er as one
+symbol, and count again:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Now the most frequent pair is er , which we merge; our system has learned
+that there should be a token for word-final er, represented as er :
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Next n e (total count of 8) get merged to ne:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er , ne
+2 lowest
+6 ne w er
+3 w i d er
+2 ne w
+If we continue, the next merges are:
+Merge Current Vocabulary
+(ne, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new
+(l, o) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo
+(lo, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low
+(new, er ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer
+(low, ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer , low
+Once we’ve learned our vocabulary, the token parser is used to tokenize a test
+sentence. The token parser just runs on the test data the merges we have learned
+1 Note that there can be ties; we could have instead chosen to merge r first, since that also has a
+frequency of 9.
+Merge e r to er
+18 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+The algorithm is usually run inside words (not merging across word boundaries),
+so the input corpus is first white-space-separated to give a set of strings, each corresponding to the characters of a word, plus a special end-of-word symbol , and its
+counts. Let’s see its operation on the following tiny input corpus of 18 word tokens
+with counts for each word (the word low appears 5 times, the word newer 6 times,
+and so on), which would have a starting vocabulary of 11 letters:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w
+2 lowest
+6 newer
+3 wider
+2 new
+The BPE algorithm first count all pairs of adjacent symbols: the most frequent
+is the pair e r because it occurs in newer (frequency of 6) and wider (frequency of
+3) for a total of 9 occurrences1. We then merge these symbols, treating er as one
+symbol, and count again:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Now the most frequent pair is er , which we merge; our system has learned
+that there should be a token for word-final er, represented as er :
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Next n e (total count of 8) get merged to ne:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er , ne
+2 lowest
+6 ne w er
+3 w i d er
+2 ne w
+If we continue, the next merges are:
+Merge Current Vocabulary
+(ne, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new
+(l, o) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo
+(lo, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low
+(new, er ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer
+(low, ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer , low
+Once we’ve learned our vocabulary, the token parser is used to tokenize a test
+sentence. The token parser just runs on the test data the merges we have learned
+1 Note that there can be ties; we could have instead chosen to merge r first, since that also has a
+frequency of 9.
+BPE
+Merge er _ to er_
+18 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+The algorithm is usually run inside words (not merging across word boundaries),
+so the input corpus is first white-space-separated to give a set of strings, each corresponding to the characters of a word, plus a special end-of-word symbol , and its
+counts. Let’s see its operation on the following tiny input corpus of 18 word tokens
+with counts for each word (the word low appears 5 times, the word newer 6 times,
+and so on), which would have a starting vocabulary of 11 letters:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w
+2 lowest
+6 newer
+3 wider
+2 new
+The BPE algorithm first count all pairs of adjacent symbols: the most frequent
+is the pair e r because it occurs in newer (frequency of 6) and wider (frequency of
+3) for a total of 9 occurrences1. We then merge these symbols, treating er as one
+symbol, and count again:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Now the most frequent pair is er , which we merge; our system has learned
+that there should be a token for word-final er, represented as er :
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Next n e (total count of 8) get merged to ne:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er , ne
+2 lowest
+6 ne w er
+3 w i d er
+2 ne w
+If we continue, the next merges are:
+Merge Current Vocabulary
+(ne, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new
+(l, o) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo
+(lo, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low
+(new, er ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer
+(low, ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer , low
+Once we’ve learned our vocabulary, the token parser is used to tokenize a test
+sentence. The token parser just runs on the test data the merges we have learned
+1 Note that there can be ties; we could have instead chosen to merge r first, since that also has a
+frequency of 9.
+18 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+The algorithm is usually run inside words (not merging across word boundaries),
+so the input corpus is first white-space-separated to give a set of strings, each corresponding to the characters of a word, plus a special end-of-word symbol , and its
+counts. Let’s see its operation on the following tiny input corpus of 18 word tokens
+with counts for each word (the word low appears 5 times, the word newer 6 times,
+and so on), which would have a starting vocabulary of 11 letters:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w
+2 lowest
+6 newer
+3 wider
+2 new
+The BPE algorithm first count all pairs of adjacent symbols: the most frequent
+is the pair e r because it occurs in newer (frequency of 6) and wider (frequency of
+3) for a total of 9 occurrences1. We then merge these symbols, treating er as one
+symbol, and count again:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Now the most frequent pair is er , which we merge; our system has learned
+that there should be a token for word-final er, represented as er :
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Next n e (total count of 8) get merged to ne:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er , ne
+2 lowest
+6 ne w er
+3 w i d er
+2 ne w
+If we continue, the next merges are:
+Merge Current Vocabulary
+(ne, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new
+(l, o) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo
+(lo, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low
+(new, er ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer
+(low, ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer , low
+Once we’ve learned our vocabulary, the token parser is used to tokenize a test
+sentence. The token parser just runs on the test data the merges we have learned
+1 Note that there can be ties; we could have instead chosen to merge r first, since that also has a
+frequency of 9.
+BPE
+Merge n e to ne
+18 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+The algorithm is usually run inside words (not merging across word boundaries),
+so the input corpus is first white-space-separated to give a set of strings, each corresponding to the characters of a word, plus a special end-of-word symbol , and its
+counts. Let’s see its operation on the following tiny input corpus of 18 word tokens
+with counts for each word (the word low appears 5 times, the word newer 6 times,
+and so on), which would have a starting vocabulary of 11 letters:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w
+2 lowest
+6 newer
+3 wider
+2 new
+The BPE algorithm first count all pairs of adjacent symbols: the most frequent
+is the pair e r because it occurs in newer (frequency of 6) and wider (frequency of
+3) for a total of 9 occurrences1. We then merge these symbols, treating er as one
+symbol, and count again:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Now the most frequent pair is er , which we merge; our system has learned
+that there should be a token for word-final er, represented as er :
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Next n e (total count of 8) get merged to ne:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er , ne
+2 lowest
+6 ne w er
+3 w i d er
+2 ne w
+If we continue, the next merges are:
+Merge Current Vocabulary
+(ne, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new
+(l, o) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo
+(lo, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low
+(new, er ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer
+(low, ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer , low
+Once we’ve learned our vocabulary, the token parser is used to tokenize a test
+sentence. The token parser just runs on the test data the merges we have learned
+1 Note that there can be ties; we could have instead chosen to merge r first, since that also has a
+frequency of 9.
+18 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+The algorithm is usually run inside words (not merging across word boundaries),
+so the input corpus is first white-space-separated to give a set of strings, each corresponding to the characters of a word, plus a special end-of-word symbol , and its
+counts. Let’s see its operation on the following tiny input corpus of 18 word tokens
+with counts for each word (the word low appears 5 times, the word newer 6 times,
+and so on), which would have a starting vocabulary of 11 letters:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w
+2 lowest
+6 newer
+3 wider
+2 new
+The BPE algorithm first count all pairs of adjacent symbols: the most frequent
+is the pair e r because it occurs in newer (frequency of 6) and wider (frequency of
+3) for a total of 9 occurrences1. We then merge these symbols, treating er as one
+symbol, and count again:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Now the most frequent pair is er , which we merge; our system has learned
+that there should be a token for word-final er, represented as er :
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Next n e (total count of 8) get merged to ne:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er , ne
+2 lowest
+6 ne w er
+3 w i d er
+2 ne w
+If we continue, the next merges are:
+Merge Current Vocabulary
+(ne, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new
+(l, o) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo
+(lo, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low
+(new, er ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer
+(low, ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer , low
+Once we’ve learned our vocabulary, the token parser is used to tokenize a test
+sentence. The token parser just runs on the test data the merges we have learned
+1 Note that there can be ties; we could have instead chosen to merge r first, since that also has a
+frequency of 9.
+BPE
+The next merges are:
+18 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+The algorithm is usually run inside words (not merging across word boundaries),
+so the input corpus is first white-space-separated to give a set of strings, each corresponding to the characters of a word, plus a special end-of-word symbol , and its
+counts. Let’s see its operation on the following tiny input corpus of 18 word tokens
+with counts for each word (the word low appears 5 times, the word newer 6 times,
+and so on), which would have a starting vocabulary of 11 letters:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w
+2 lowest
+6 newer
+3 wider
+2 new
+The BPE algorithm first count all pairs of adjacent symbols: the most frequent
+is the pair e r because it occurs in newer (frequency of 6) and wider (frequency of
+3) for a total of 9 occurrences1. We then merge these symbols, treating er as one
+symbol, and count again:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Now the most frequent pair is er , which we merge; our system has learned
+that there should be a token for word-final er, represented as er :
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er
+2 lowest
+6 n e w er
+3 w i d er
+2 new
+Next n e (total count of 8) get merged to ne:
+corpus vocabulary
+5 low , d, e, i, l, n, o, r, s, t, w, er, er , ne
+2 lowest
+6 ne w er
+3 w i d er
+2 ne w
+If we continue, the next merges are:
+Merge Current Vocabulary
+(ne, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new
+(l, o) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo
+(lo, w) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low
+(new, er ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer
+(low, ) , d, e, i, l, n, o, r, s, t, w, er, er , ne, new, lo, low, newer , low
+Once we’ve learned our vocabulary, the token parser is used to tokenize a test
+sentence. The token parser just runs on the test data the merges we have learned
+1 Note that there can be ties; we could have instead chosen to merge r first, since that also has a
+frequency of 9.
+BPE token segmenter algorithm
+On the test data, run each merge learned from the
+training data:
+◦ Greedily
+◦ In the order we learned them
+◦ (test frequencies don't play a role)
+So: merge every e r to er, then merge er _ to er_, etc.
+Result:
+◦ Test set "n e w e r _" would be tokenized as a full word
+◦ Test set "l o w e r _" would be two tokens: "low er_"
+Properties of BPE tokens
+Usually include frequent words
+And frequent subwords
+• Which are often morphemes like -est or –er
+A morpheme is the smallest meaning-bearing unit of a
+language
+• unlikeliest has 3 morphemes un-, likely, and -est
+Basic Text
+Processing
+Byte Pair Encoding
+Basic Text
+Processing
+Word Normalization and
+other issues
+Word Normalization
+Putting words/tokens in a standard format
+◦ U.S.A. or USA
+◦ uhhuh or uh-huh
+◦ Fed or fed
+◦ am, is, be, are 
+Case folding
+Applications like IR: reduce all letters to lower case
+◦ Since users tend to use lower case
+◦ Possible exception: upper case in mid-sentence?
+◦ e.g., General Motors
+◦ Fed vs. fed
+◦ SAIL vs. sail
+For sentiment analysis, MT, Information extraction
+◦ Case is helpful (US versus us is important)
+Lemmatization
+Represent all words as their lemma, their shared root
+= dictionary headword form:
+◦ am, are, is ® be
+◦ car, cars, car's, cars' ® car
+◦ Spanish quiero (‘I want’), quieres (‘you want’)
+® querer ‘want'
+◦ He is reading detective stories
+® He be read detective story 
+Lemmatization is done by Morphological Parsing
+Morphemes:
+◦ The small meaningful units that make up words
+◦ Stems: The core meaning-bearing units
+◦ Affixes: Parts that adhere to stems, often with grammatical
+functions
+Morphological Parsers:
+◦ Parse cats into two morphemes cat and s
+◦ Parse Spanish amaren (‘if in the future they would love’) into
+morpheme amar ‘to love’, and the morphological features
+3PL and future subjunctive. 
+Stemming
+Reduce terms to stems, chopping off affixes crudely
+This was not the map we
+found in Billy Bones’s
+chest, but an accurate
+copy, complete in all
+things-names and heights
+and soundings-with the
+single exception of the
+red crosses and the
+written notes.
+Thi wa not the map we
+found in Billi Bone s chest
+but an accur copi complet
+in all thing name and
+height and sound with the
+singl except of the red
+cross and the written note
+. 
+Porter Stemmer
+Based on a series of rewrite rules run in series
+◦ A cascade, in which output of each pass fed to next pass
+Some sample rules:
+20 CHAPTER 2 • REGULAR EXPRESSIONS, TEXT NORMALIZATION, EDIT DISTANCE
+be; the words dinner and dinners both have the lemma dinner. Lemmatizing each of
+these forms to the same lemma will let us find all mentions of words in Russian like
+Moscow. The lemmatized form of a sentence like He is reading detective stories
+would thus be He be read detective story.
+How is lemmatization done? The most sophisticated methods for lemmatization
+involve complete morphological parsing of the word. Morphology is the study of
+morpheme the way words are built up from smaller meaning-bearing units called morphemes.
+stem Two broad classes of morphemes can be distinguished: stems—the central moraffix pheme of the word, supplying the main meaning— and affixes—adding “additional”
+meanings of various kinds. So, for example, the word fox consists of one morpheme
+(the morpheme fox) and the word cats consists of two: the morpheme cat and the
+morpheme -s. A morphological parser takes a word like cats and parses it into the
+two morphemes cat and s, or parses a Spanish word like amaren (‘if in the future
+they would love’) into the morpheme amar ‘to love’, and the morphological features
+3PL and future subjunctive.
+The Porter Stemmer
+Lemmatization algorithms can be complex. For this reason we sometimes make use
+of a simpler but cruder method, which mainly consists of chopping off word-final
+stemming affixes. This naive version of morphological analysis is called stemming. One of
+Porter stemmer the most widely used stemming algorithms is the Porter (1980). The Porter stemmer
+applied to the following paragraph:
+This was not the map we found in Billy Bones’s chest, but
+an accurate copy, complete in all things-names and heights
+and soundings-with the single exception of the red crosses
+and the written notes.
+produces the following stemmed output:
+Thi wa not the map we found in Billi Bone s chest but an
+accur copi complet in all thing name and height and sound
+with the singl except of the red cross and the written note
+cascade The algorithm is based on series of rewrite rules run in series, as a cascade, in
+which the output of each pass is fed as input to the next pass; here is a sampling of
+the rules:
+ATIONAL ! ATE (e.g., relational ! relate)
+ING ! ✏ if stem contains vowel (e.g., motoring ! motor)
+SSES ! SS (e.g., grasses ! grass)
+Detailed rule lists for the Porter stemmer, as well as code (in Java, Python, etc.)
+can be found on Martin Porter’s homepage; see also the original paper (Porter, 1980).
+Simple stemmers can be useful in cases where we need to collapse across different variants of the same lemma. Nonetheless, they do tend to commit errors of both
+over- and under-generalizing, as shown in the table below (Krovetz, 1993):
+Errors of Commission Errors of Omission
+organization organ European Europe
+doing doe analysis analyzes
+numerical numerous noise noisy
+policy police sparse sparsity
+Dealing with complex morphology is necessary
+for many languages
+◦ e.g., the Turkish word:
+◦ Uygarlastiramadiklarimizdanmissinizcasina
+◦ `(behaving) as if you are among those whom we could not civilize’
+◦ Uygar `civilized’ + las `become’
++ tir `cause’ + ama `not able’
++ dik `past’ + lar ‘plural’
++ imiz ‘p1pl’ + dan ‘abl’
++ mis ‘past’ + siniz ‘2pl’ + casina ‘as if’ 
+Sentence Segmentation
+!, ? mostly unambiguous but period “.” is very ambiguous
+◦ Sentence boundary
+◦ Abbreviations like Inc. or Dr.
+◦ Numbers like .02% or 4.3
+Common algorithm: Tokenize first: use rules or ML to
+classify a period as either (a) part of the word or (b) a
+sentence-boundary.
+◦ An abbreviation dictionary can help
+Sentence segmentation can then often be done by rules
+based on this tokenization.
+Basic Text
+Processing
+Word Normalization and
+other issues
