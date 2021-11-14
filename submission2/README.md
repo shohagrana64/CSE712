@@ -8,7 +8,7 @@ Paper title:
 Detecting Attackable Sentences in Arguments
 
 Link to the paper:
-https://aclanthology.org/2020.aacl-srw.15.pdf
+https://aclanthology.org/2020.emnlp-main.1.pdf
 
 Group Number:
 3
