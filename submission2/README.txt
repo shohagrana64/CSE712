@@ -13,7 +13,7 @@ https://aclanthology.org/2020.emnlp-main.1.pdf
 Group Number:
 3
 
-Group Members:</br>
-21366015 Shohag Rana</br>
-21166050 Auninda Alam</br>
+Group Members:
+21366015 Shohag Rana
+21166050 Auninda Alam
 21166049 Marjan Tahreen
