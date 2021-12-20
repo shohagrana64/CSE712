@@ -4,7 +4,7 @@ Link to unlisted youtube video:
 Link to the Concept Map:
 
 
-Pdf: 
+Pdf: https://github.com/shohagrana64/CSE712/blob/main/submission3/Natural_Language_Processing_with_Python.pdf
 
 Name, Author of the Book:
 Natural Language Processing with Python
