@@ -8,7 +8,7 @@ Paper title:
 Toxic Language Detection in Online Video Games
 
 Paper presentation:
-https://www.canva.com/design/DAE0xwF0qu8/ETouGTKSVHecsKKorOVOqA/view?utm_content=DAE0xwF0qu8&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton
+
 
 Paper submission date (to workshop/conference):
 25 October 2021
