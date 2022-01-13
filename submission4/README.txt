@@ -5,7 +5,7 @@ Conference / Paper submission login URL:
 https://easy....
 
 Paper title:
-Toxic Language Detection in Online Video Games
+Toxic Language Detection in Online Video Games Using BERT and Na¨ıve Bayes Algorithm
 
 Paper presentation:
 
