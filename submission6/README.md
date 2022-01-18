@@ -3,7 +3,7 @@ completed youtube video:
 https://www.youtube.com/watch?v=5ctbvkAMQO4 \
 https://www.youtube.com/watch?v=Z9zTJS6cWiQ
 
-did project:
+did project: \
 https://github.com/shohagrana64/rasa-project/tree/main
 
 was active in slack:
