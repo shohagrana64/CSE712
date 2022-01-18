@@ -1,6 +1,6 @@
 completed youtube video:
 
-https://www.youtube.com/watch?v=5ctbvkAMQO4
+https://www.youtube.com/watch?v=5ctbvkAMQO4 \
 https://www.youtube.com/watch?v=Z9zTJS6cWiQ
 
 did project:
